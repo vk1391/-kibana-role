@@ -1,0 +1,12 @@
+---
+- name: Install kibana
+  become: true
+  apt:
+    deb: "/tmp/kibana-{{ elasticsearch_version }}-amd64.deb"
+    state: present
+- name: Start service
+  become: true
+  systemd:
+    name: kibana
+    state: started    
+  notify: restart kibana

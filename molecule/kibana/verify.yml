@@ -1,0 +1,43 @@
+---
+- name: Verify Ubuntu
+  hosts: ubuntu
+  gather_facts: true
+  tasks:
+    - name: install curl
+      become: true
+      apt:
+        name: curl
+        update_cache: yes
+        state: present
+    - name: curl web
+      command:
+        cmd: curl localhost:5601
+      register: curl  
+    - name: PRINT RESULT
+      debug: var=curl.stdout_lines
+    - name: list log
+      become: true
+      command:
+        cmd: ls -al /var/log/kibana/
+      register: ls  
+    - name: PRINT RESULT
+      debug: var=ls.stdout_lines
+- name: Verify centos
+  hosts: centos
+  gather_facts: true
+  tasks: 
+    - name: curl web
+      command:
+        cmd: curl localhost:5601
+      register: curl  
+    - name: PRINT RESULT
+      debug: var=curl.stdout_lines
+    - name: list log
+      become: true
+      command:
+        cmd: ls -al /var/log/kibana
+      register: ls  
+    - name: PRINT RESULT
+      debug: var=ls.stdout_lines     
+        
+       
